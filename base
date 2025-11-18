@@ -1,0 +1,48 @@
+[build]
+  publish = "."
+  command = "echo 'No build process needed for static site'"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# 单页应用(SPA)路由配置 - 解决页面刷新404问题
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# API代理配置（如果需要）
+[[redirects]]
+  from = "/api/*"
+  to = "https://api.yoursite.com/:splat"
+  status = 200
+
+# 安全头设置
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Content-Type = "text/css"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "application/javascript"
+
+# 环境变量配置
+[context.production.environment]
+  NODE_ENV = "production"
+  SITE_URL = "https://your-site.netlify.app"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "development"
+
+[context.branch-deploy.environment]
+  NODE_ENV = "development"
