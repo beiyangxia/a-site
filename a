@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抗战知识闯关 - 铭记历史 缅怀先烈</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #8B0000;
+            --secondary-color: #D4AF37;
+            --light-color: #F5F5F5;
+            --dark-color: #333;
+            --success-color: #28a745;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #A52A2A);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            margin-left: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-score {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-right: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: var(--dark-color);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background: #c19b2c;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #a52a2a;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .card h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        .welcome-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(rgba(139, 0, 0, 0.8), rgba(139, 0, 0, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%238B0000"/><path d="M50 10 L60 40 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 40 Z" fill="%23D4AF37"/></svg>');
+            background-size: cover;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: white;
+            border: none;
+        }
+        
+        .welcome-section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 25px;
+        }
+        
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .quiz-section {
+            display: none;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            padding: 15px;
+            background: var(--light-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background: #e9ecef;
+        }
+        
+        .option.selected {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .option.correct {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .option.incorrect {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .ranking-list {
+            list-style: none;
+        }
+        
+        .ranking-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light-color);
+        }
+        
+        .ranking-item:first-child {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .certificate {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(45deg, #f9f9f9, #fff);
+            border: 10px solid var(--secondary-color);
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .certificate h3 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .certificate p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        
+        .user-name {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--dark-color);
+        }
+        
+        .video-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .video-card {
+            background: var(--light-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .video-thumbnail {
+            height: 160px;
+            background: var(--dark-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-info h4 {
+            margin-bottom: 10px;
+        }
+        
+        .locked {
+            position: relative;
+        }
+        
+        .locked::after {
+            content: "🔒";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: var(--light-color);
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+        
+        .tab-navigation {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--light-color);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .user-info {
+                margin-top: 15px;
+            }
+            
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🇨🇳</div>
+                    <h1>抗战知识闯关</h1>
+                </div>
+                <div class="user-info">
+                    <div class="user-score">积分: <span id="current-score">0</span></div>
+                    <button class="btn" id="user-name-btn">游客</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="welcome-section">
+            <h2>铭记历史 缅怀先烈</h2>
+            <p>通过知识闯关了解抗战历史，传承红色基因，弘扬爱国主义精神</p>
+            <button class="btn btn-primary" id="start-quiz">开始闯关</button>
+        </div>
+
+        <div class="tab-navigation">
+            <div class="tab active" data-tab="home">首页</div>
+            <div class="tab" data-tab="quiz">知识闯关</div>
+            <div class="tab" data-tab="ranking">积分排名</div>
+            <div class="tab" data-tab="certificate">电子证书</div>
+            <div class="tab" data-tab="videos">抗战视频</div>
+        </div>
+
+        <div class="tab-content active" id="home-tab">
+            <div class="card">
+                <h2>活动介绍</h2>
+                <p>抗日战争是中华民族历史上最伟大的卫国战争，是中国人民反抗日本帝国主义侵略的正义战争。本次知识闯关活动旨在通过互动问答的形式，帮助大家了解抗战历史，缅怀革命先烈，传承红色基因。</p>
+                <p>活动包含多个关卡，每个关卡有5道题目，答对可获得积分。积累一定积分后可以解锁抗战相关短视频，并获得电子荣誉证书。</p>
+            </div>
+
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="feature-icon">❓</div>
+                    <h3>知识闯关</h3>
+                    <p>通过回答抗战历史相关问题，测试您的历史知识水平</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>积分排名</h3>
+                    <p>查看您的积分排名，与其他参与者一较高下</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📜</div>
+                    <h3>电子证书</h3>
+                    <p>完成挑战后获得个性化电子荣誉证书</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎬</div>
+                    <h3>抗战视频</h3>
+                    <p>解锁观看珍贵历史影像资料和纪录片</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="quiz-tab">
+            <div class="card">
+                <h2>抗战知识闯关</h2>
+                <div class="progress-bar">
+                    <div class="progress" id="quiz-progress"></div>
+                </div>
+                <div id="quiz-container">
+                    <div class="question" id="question-text">问题加载中...</div>
+                    <div class="options" id="options-container">
+                        <!-- 选项将通过JavaScript动态生成 -->
+                    </div>
+                    <div class="quiz-navigation">
+                        <button class="btn" id="prev-question">上一题</button>
+                        <button class="btn btn-primary" id="next-question">下一题</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="ranking-tab">
+            <div class="card">
+                <h2>积分排名</h2>
+                <ul class="ranking-list" id="ranking-list">
+                    <!-- 排名将通过JavaScript动态生成 -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" id="certificate-tab">
+            <div class="card">
+                <h2>电子证书</h2>
+                <div class="certificate">
+                    <h3>抗战知识学习荣誉证书</h3>
+                    <p>授予</p>
+                    <div class="user-name" id="certificate-name">游客</div>
+                    <p>在抗战知识闯关活动中表现优异，累计获得</p>
+                    <div class="user-name" id="certificate-score">0</div>
+                    <p>分，特发此证，以资鼓励。</p>
+                    <p id="certificate-date">2023年X月X日</p>
+                    <button class="btn btn-primary" id="download-certificate" style="margin-top: 20px;">下载证书</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="videos-tab">
+            <div class="card">
+                <h2>抗战视频</h2>
+                <p>积累积分解锁更多珍贵历史视频资料</p>
+                <div class="video-section" id="video-container">
+                    <!-- 视频将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>抗战知识闯关 &copy; 2023 - 铭记历史，缅怀先烈，珍爱和平</p>
+        </div>
+    </footer>
+
+    <script>
+        // 模拟数据
+        const quizData = [
+            {
+                question: "抗日战争全面爆发的标志是什么事件？",
+                options: [
+                    "九一八事变",
+                    "七七事变",
+                    "一二八事变",
+                    "西安事变"
+                ],
+                answer: 1
+            },
+            {
+                question: "中国抗日战争持续了多少年？",
+                options: [
+                    "8年",
+                    "10年",
+                    "14年",
+                    "12年"
+                ],
+                answer: 2
+            },
+            {
+                question: "下列哪场战役是抗日战争期间中国军队取得的第一次重大胜利？",
+                options: [
+                    "淞沪会战",
+                    "平型关大捷",
+                    "台儿庄战役",
+                    "百团大战"
+                ],
+                answer: 1
+            },
+            {
+                question: "抗日战争胜利纪念日是哪一天？",
+                options: [
+                    "8月15日",
+                    "9月2日",
+                    "9月3日",
+                    "10月1日"
+                ],
+                answer: 2
+            },
+            {
+                question: "抗日战争期间，中国战场牵制了日本陆军总兵力的多少？",
+                options: [
+                    "约30%",
+                    "约50%",
+                    "约70%",
+                    "约90%"
+                ],
+                answer: 2
+            }
+        ];
+
+        const videosData = [
+            { id: 1, title: "七七事变历史影像", pointsRequired: 0, unlocked: true },
+            { id: 2, title: "平型关大捷纪录片", pointsRequired: 10, unlocked: false },
+            { id: 3, title: "台儿庄战役实录", pointsRequired: 20, unlocked: false },
+            { id: 4, title: "百团大战历史回顾", pointsRequired: 30, unlocked: false },
+            { id: 5, title: "抗战胜利日珍贵影像", pointsRequired: 50, unlocked: false }
+        ];
+
+        // 用户数据
+        let userData = {
+            name: "游客",
+            score: 0,
+            currentQuestion: 0,
+            answers: [],
+            videosUnlocked: [1]
+        };
+
+        // 排名数据
+        let rankingData = [
+            { name: "张爱国", score: 85 },
+            { name: "李卫国", score: 76 },
+            { name: "王抗战", score: 70 },
+            { name: "刘历史", score: 65 },
+            { name: "陈铭记", score: 60 },
+            { name: "游客", score: 0 }
+        ];
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 从localStorage加载数据
+            loadUserData();
+            
+            // 设置标签页切换
+            setupTabs();
+            
+            // 初始化问答系统
+            initQuiz();
+            
+            // 初始化排名
+            renderRanking();
+            
+            // 初始化视频
+            renderVideos();
+            
+            // 更新证书
+            updateCertificate();
+            
+            // 事件监听
+            document.getElementById('start-quiz').addEventListener('click', function() {
+                switchTab('quiz');
+            });
+            
+            document.getElementById('user-name-btn').addEventListener('click', function() {
+                const newName = prompt("请输入您的姓名:", userData.name);
+                if (newName && newName.trim() !== "") {
+                    userData.name = newName.trim();
+                    document.getElementById('user-name-btn').textContent = userData.name;
+                    saveUserData();
+                    updateCertificate();
+                }
+            });
+            
+            document.getElementById('download-certificate').addEventListener('click', function() {
+                alert("证书下载功能需要后端支持，当前为演示版本");
+            });
+        });
+
+        // 标签页切换
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            });
+        }
+
+        function switchTab(tabName) {
+            // 移除所有active类
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 添加active类到当前标签
+            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            // 如果是问答标签，初始化问答
+            if (tabName === 'quiz') {
+                initQuiz();
+            }
+        }
+
+        // 初始化问答系统
+        function initQuiz() {
+            const questionElement = document.getElementById('question-text');
+            const optionsElement = document.getElementById('options-container');
+            const prevButton = document.getElementById('prev-question');
+            const nextButton = document.getElementById('next-question');
+            const progressElement = document.getElementById('quiz-progress');
+            
+            // 显示当前问题
+            function showQuestion() {
+                const currentQuiz = quizData[userData.currentQuestion];
+                questionElement.textContent = `第${userData.currentQuestion + 1}题: ${currentQuiz.question}`;
+                
+                // 更新进度条
+                progressElement.style.width = `${((userData.currentQuestion + 1) / quizData.length) * 100}%`;
+                
+                // 清空选项
+                optionsElement.innerHTML = '';
+                
+                // 添加选项
+                currentQuiz.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('option');
+                    optionElement.textContent = option;
+                    
+                    // 如果已经回答过，显示结果
+                    if (userData.answers[userData.currentQuestion] !== undefined) {
+                        if (index === currentQuiz.answer) {
+                            optionElement.classList.add('correct');
+                        } else if (index === userData.answers[userData.currentQuestion] && index !== currentQuiz.answer) {
+                            optionElement.classList.add('incorrect');
+                        }
+                    }
+                    
+                    // 如果当前选项是用户的选择
+                    if (index === userData.answers[userData.currentQuestion]) {
+                        optionElement.classList.add('selected');
+                    }
+                    
+                    optionElement.addEventListener('click', function() {
+                        if (userData.answers[userData.currentQuestion] === undefined) {
+                            selectOption(index);
+                        }
+                    });
+                    
+                    optionsElement.appendChild(optionElement);
+                });
+                
+                // 更新按钮状态
+                prevButton.disabled = userData.currentQuestion === 0;
+                nextButton.textContent = userData.currentQuestion === quizData.length - 1 ? "完成" : "下一题";
+            }
+            
+            // 选择选项
+            function selectOption(optionIndex) {
+                // 如果已经回答过，不能再次选择
+                if (userData.answers[userData.currentQuestion] !== undefined) {
+                    return;
+                }
+                
+                // 记录答案
+                userData.answers[userData.currentQuestion] = optionIndex;
+                
+                // 检查答案是否正确
+                const currentQuiz = quizData[userData.currentQuestion];
+                if (optionIndex === currentQuiz.answer) {
+                    userData.score += 10;
+                    document.getElementById('current-score').textContent = userData.score;
+                }
+                
+                // 保存数据
+                saveUserData();
+                
+                // 重新显示问题（显示结果）
+                showQuestion();
+                
+                // 检查是否解锁新视频
+                checkUnlockedVideos();
+            }
+            
+            // 上一题
+            prevButton.addEventListener('click', function() {
+                if (userData.currentQuestion > 0) {
+                    userData.currentQuestion--;
+                    showQuestion();
+                }
+            });
+            
+            // 下一题/完成
+            nextButton.addEventListener('click', function() {
+                if (userData.currentQuestion < quizData.length - 1) {
+                    userData.currentQuestion++;
+                    showQuestion();
+                } else {
+                    // 完成所有问题
+                    alert(`恭喜您完成所有问题！您的最终得分是: ${userData.score}`);
+                    switchTab('certificate');
+                }
+            });
+            
+            // 显示第一个问题
+            showQuestion();
+        }
+
+        // 渲染排名
+        function renderRanking() {
+            const rankingList = document.getElementById('ranking-list');
+            rankingList.innerHTML = '';
+            
+            // 将当前用户添加到排名中（如果不在前5名）
+            const allRanking = [...rankingData];
+            const currentUserIndex = allRanking.findIndex(item => item.name === userData.name);
+            
+            if (currentUserIndex === -1) {
+                allRanking.push({ name: userData.name, score: userData.score });
+            } else {
+                allRanking[currentUserIndex].score = userData.score;
+            }
+            
+            // 按分数排序
+            allRanking.sort((a, b) => b.score - a.score);
+            
+            // 只显示前6名
+            const displayRanking = allRanking.slice(0, 6);
+            
+            displayRanking.forEach((user, index) => {
+                const rankingItem = document.createElement('li');
+                rankingItem.classList.add('ranking-item');
+                if (user.name === userData.name) {
+                    rankingItem.style.fontWeight = 'bold';
+                    rankingItem.style.color = 'var(--primary-color)';
+                }
+                
+                rankingItem.innerHTML = `
+                    <span>${index + 1}. ${user.name}</span>
+                    <span>${user.score}分</span>
+                `;
+                
+                rankingList.appendChild(rankingItem);
+            });
+        }
+
+        // 渲染视频
+        function renderVideos() {
+            const videoContainer = document.getElementById('video-container');
+            videoContainer.innerHTML = '';
+            
+            videosData.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.classList.add('video-card');
+                
+                if (!video.unlocked && userData.score < video.pointsRequired) {
+                    videoCard.classList.add('locked');
+                }
+                
+                videoCard.innerHTML = `
+                    <div class="video-thumbnail">🎬</div>
+                    <div class="video-info">
+                        <h4>${video.title}</h4>
+                        <p>${video.unlocked || userData.score >= video.pointsRequired ? '已解锁' : `需要${video.pointsRequired}积分解锁`}</p>
+                        ${!video.unlocked && userData.score >= video.pointsRequired ? 
+                            `<button class="btn unlock-btn" data-video-id="${video.id}">解锁视频</button>` : 
+                            ''}
+                    </div>
+                `;
+                
+                videoContainer.appendChild(videoCard);
+            });
+            
+            // 解锁按钮事件
+            document.querySelectorAll('.unlock-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const videoId = parseInt(this.getAttribute('data-video-id'));
+                    unlockVideo(videoId);
+                });
+            });
+        }
+
+        // 解锁视频
+        function unlockVideo(videoId) {
+            const video = videosData.find(v => v.id === videoId);
+            if (video && !video.unlocked && userData.score >= video.pointsRequired) {
+                video.unlocked = true;
+                if (!userData.videosUnlocked.includes(videoId)) {
+                    userData.videosUnlocked.push(videoId);
+                }
+                saveUserData();
+                renderVideos();
+                alert(`恭喜解锁视频: ${video.title}`);
+            }
+        }
+
+        // 检查解锁视频
+        function checkUnlockedVideos() {
+            let unlockedNew = false;
+            
+            videosData.forEach(video => {
+                if (!video.unlocked && userData.score >= video.pointsRequired) {
+                    video.unlocked = true;
+                    if (!userData.videosUnlocked.includes(video.id)) {
+                        userData.videosUnlocked.push(video.id);
+                        unlockedNew = true;
+                    }
+                }
+            });
+            
+            if (unlockedNew) {
+                saveUserData();
+                renderVideos();
+            }
+        }
+
+        // 更新证书
+        function updateCertificate() {
+            document.getElementById('certificate-name').textContent = userData.name;
+            document.getElementById('certificate-score').textContent = userData.score + "分";
+            
+            const now = new Date();
+            document.getElementById('certificate-date').textContent = 
+                `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
+        }
+
+        // 保存用户数据到localStorage
+        function saveUserData() {
+            localStorage.setItem('antiJapaneseWarQuizUserData', JSON.stringify(userData));
+            renderRanking();
+        }
+
+        // 从localStorage加载用户数据
+        function loadUserData() {
+            const savedData = localStorage.getItem('antiJapaneseWarQuizUserData');
+            if (savedData) {
+                userData = JSON.parse(savedData);
+            }
+            
+            document.getElementById('user-name-btn').textContent = userData.name;
+            document.getElementById('current-score').textContent = userData.score;
+            
+            // 更新视频解锁状态
+            videosData.forEach(video => {
+                video.unlocked = userData.videosUnlocked.includes(video.id);
+            });
+        }
+    </script>
+</body>
+</html>
